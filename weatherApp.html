@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VIEW Weather APP</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style type="text/css">
+		.jumbotron h1{
+    color: #fff;
+	}
+	
+	</style>
+</head>
+<body>
+
+	<div class="jumbotron text-center" style="background-color:#560d0d"><h1>VIEW Weather APP</h1></div>
+
+<p>Input your city name in the box below to get current weather condition</p>
+
+
+	<div class="form-group"><input id="name" type="text" name="cityName" placeholder="City Name" /></div> 
+	<button id="button" class="btn btn-primary" onclick="weatherData()">Search</button>
+	<hr/>
+
+<div class="container">
+	<div class="row">
+
+<div class="col-sm-4">City <p id="city" class="text-primary"></p> </div>
+<div class="col-sm-4">Weather <p id="weather" class="text-primary"></p> </div>
+<div class="col-sm-4">Weather Description <p id="weatherDesc" class="text-primary"></p> </div>
+<div class="col-sm-4">Temperature <p id="temp" class="text-primary"></p> </div>
+<div class="col-sm-4">Humidity <p id="humidity" class="text-primary"></p> </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+	let searchInput = document.getElementById('name')
+
+		searchInput.addEventListener("keyup", enterPressed)
+
+		function enterPressed(event){
+			if (event.key === "Enter") {
+				weatherData();
+			}
+		}
+
+
+function weatherData() {
+	fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchInput.value + '&appid=bd4ae7859d1161cfa13ccc8346b43c73')
+	.then(function(response){
+	      return response.json()
+	  })
+	.then(function(data){
+		console.log(data)
+		reloadPage(data);
+		
+		})
+	.catch(function() {
+
+	});
+	}
+
+	function reloadPage(data){
+	document.getElementById('city').innerHTML = data.name;
+	document.getElementById('weather').innerHTML = data.weather[0].main;
+	document.getElementById('weatherDesc').innerHTML = data.weather[0].description;
+	document.getElementById('temp').innerHTML = data.main.temp;
+	document.getElementById('humidity').innerHTML = data.main.humidity;
+}
+</script>
+</body>
+</html>
